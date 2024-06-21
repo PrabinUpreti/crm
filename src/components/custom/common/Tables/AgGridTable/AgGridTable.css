@@ -1,0 +1,66 @@
+.ag-theme-quartz,
+.ag-theme-alpine {
+  /* --ag-foreground-color: rgb(126, 46, 132); */
+  /* Changes the color of the grid text */
+  /* Changes the color of the grid background */
+  /* Changes the header color of the top row */
+  /* --ag-header-background-color: black; */
+  /* Changes the hover color of the row*/
+
+  /* --ag-header-foreground-color: white; */
+
+  /* --ag-header-background-color: hsla(208, 89%, 49%, 1); */
+  /* --ag-header-text-color: black;
+  --ag-col-border-style: solid;
+  --ag-col-border-color: black;
+  --ag-col-border-width: 1px; */
+  --ag-font-size: 13px;
+  /* --ag-header-foreground-color: white;
+  --ag-header-background-color: black; */
+  /* --ag-header-cell-hover-background-color: rgb(80, 40, 140);
+  --ag-header-cell-moving-background-color: rgb(80, 40, 140); */
+}
+
+.ag-theme-quartz {
+  /* --ag-foreground-color: rgb(126, 46, 132); */
+}
+.ag-theme-quartz-dark {
+  --ag-foreground-color: var(--primary-foreground);
+  --ag-header-foreground-color: var(--primary-foreground);
+  --ag-background-color: var(--background);
+}
+
+.ag-header-cell-filtered {
+  background-color: hsla(208, 89%, 49%, 1) !important;
+  color: #fff !important;
+}
+
+.ag-header-cell-filtered span {
+  color: #fff !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b8b7b7;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

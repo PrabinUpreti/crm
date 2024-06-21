@@ -1,0 +1,11 @@
+.ag-theme-quartz,
+.ag-theme-alpine {
+  /* Changes the color of the grid text */
+  --ag-foreground-color: white;
+  /* Changes the color of the grid background */
+  --ag-background-color: rgb(17, 15, 15);
+  /* Changes the header color of the top row */
+  --ag-header-background-color: dark;
+  /* Changes the hover color of the row*/
+  --ag-row-hover-color: rgb(69, 68, 68);
+}

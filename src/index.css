@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,700;1,900&family=Neucha&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* black gray */
+    /* --background: 210, 40%, 98%; */
+    /* white background  */
+    --background: 0 0% 100%;
+
+    /* gray background  */
+    /* --background: 220 14% 96%; */
+    --foreground: 222.2 84% 4.9%;
+
+    /* block */
+    --block: 0 0% 100%;
+    --block-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* changed popover background */
+    --popover: 0 0% 100%;
+    /* initial popover background */
+    --popover: 210 40% 98%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 208 89% 49%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* accent initial */
+    --accent: 210 40% 96.1%;
+
+    /* changed accent */
+    --popover: 0 0% 100%;
+
+    --accent-foreground: 208, 89%, 49%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 208 89% 49%;
+    --radius: 0.5rem;
+
+    /* custom font sizes */
+    --font-size-xs: 0.625rem;
+    --font-size-sm: 0.675rem;
+    --font-size-sm: 0.75rem;
+    --font-size-md: 0.875rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.125rem;
+    --font-size-2xl: 1.25rem;
+    --font-size-3xl: 1.5rem;
+    --font-size-4xl: 1.75rem;
+    --font-size-4xl: 2rem;
+    --font-size-5xl: 2.25rem;
+
+    /* tooltip */
+    --tooltip: 222.2 84% 4.9%;
+    --tooltip-foreground: 0 0% 90%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 0 0% 75%;
+
+    /*block  */
+    --block: 222.2 84% 4.9%;
+    --block-foreground: 0 0% 75%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 75%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 75%;
+    --primary: 208 89% 49%;
+    --primary-foreground: 0 0% 91%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 0 0% 91%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 0 0% 75%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 75%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  e-tbar-btn e-tbtn-txt e-control e-btn e-lib {
+    @apply !bg-gray-800;
+  }
+}
+
+* {
+  font-family: Poppins;
+}
+
+/* Scrollbar customization for calendar components */
+.calendar-scroll::-webkit-scrollbar {
+  width: 8px;
+  scrollbar-width: thin;
+}
+.calendar-scroll::-webkit-scrollbar-track {
+  background: var(--background);
+}
+.calendar-scroll::-webkit-scrollbar-track:hover {
+  background: var(--muted);
+}
+.calendar-scroll::-webkit-scrollbar-thumb {
+  background: #dadce0;
+  border-radius: 6px;
+  cursor: grab;
+}
+.calendar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #bdc1c6;
+}
+.calendar-scroll::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+}
