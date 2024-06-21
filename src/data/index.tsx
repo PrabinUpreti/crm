@@ -1,4 +1,6 @@
 import {
+  ContactIconOutlined,
+  LeadIconOutlined,
   PeopleIcon,
   PeopleIconOutlined,
   ProjectsIcon,
@@ -12,19 +14,17 @@ import moment from "moment";
 
 export const pieChartData = {
   labels: [
-    i18n.t("component.home.text.projectStatus.pending", "pending"),
-    i18n.t("component.home.text.projectStatus.notStarted", "Not Started"),
-    i18n.t("component.home.text.projectStatus.onProgress", "On Progress"),
-    i18n.t("component.home.text.projectStatus.completed", "Completed"),
+    i18n.t("component.home.text.projectStatus.coldLeads", "Cold Leads"),
+    i18n.t("component.home.text.projectStatus.warmLeads", "Warm Leads"),
+    i18n.t("component.home.text.projectStatus.hotLeads", "Hot Leads"),
   ],
   datasets: [
     {
-      data: [12, 10, 8, 12],
+      data: [12, 10, 8],
       backgroundColor: [
         "#FF3A29",
         "#02A0FC",
         "#5541D8",
-        "#34B53A",
         // "#FFB200",
         // "#FFE5D3",
       ],
@@ -278,29 +278,27 @@ export const upcomingDeadlineData = {
 export const cardData = [
   {
     count: 10,
-    label: i18n.t("component.home.analytics.workspaceNum", "Workspaces"),
-    icon: <WorkspaceIcon />,
-    className: "bg-green-400"
+    label: i18n.t("component.home.analytics.customerNum", "No of Customer"),
+    icon: <ContactIconOutlined />,
+    className: "bg-green-400",
   },
   {
     count: 40,
-    label: i18n.t("component.home.analytics.projectNum", "Projects"),
-    icon: <ProjectsIcon />,
+    label: i18n.t("component.home.analytics.projectNum", "No of Leads"),
+    icon: <LeadIconOutlined />,
   },
-  {
-    count: 80,
-    label: i18n.t("component.home.analytics.memberNum", "Members"),
-    icon: <PeopleIconOutlined />,
-    className: "bg-yellow-400"
-
-  },
-  {
-    count: 80,
-    label: i18n.t("component.home.analytics.memberNum", "Members"),
-    icon: <PeopleIconOutlined />,
-    className: "bg-purple-400"
-
-  },
+  // {
+  //   count: 80,
+  //   label: i18n.t("component.home.analytics.memberNum", "Members"),
+  //   icon: <PeopleIconOutlined />,
+  //   className: "bg-yellow-400",
+  // },
+  // {
+  //   count: 80,
+  //   label: i18n.t("component.home.analytics.memberNum", "Members"),
+  //   icon: <PeopleIconOutlined />,
+  //   className: "bg-purple-400",
+  // },
 ];
 
 export const users = [

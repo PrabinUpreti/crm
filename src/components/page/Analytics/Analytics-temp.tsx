@@ -28,12 +28,15 @@ import { cn } from "@/lib/utils";
 
 const Analytics = () => {
   return (
-    <div className=" flex flex-col gap-[1.5rem] mt-[1.5rem]">
+    <div className=" flex flex-col gap-[1.5rem]">
+      {/* <ThreeVerticalDots className="ml-auto" /> */}
+      <CreateWorkspaceForm />
       <div className="grid grid-cols-4  gap-[1.8rem] ">
-        {cardData.map((cardDataItem) => {
+        {cardData.map((cardDataItem, index) => {
           return (
+            // <WidgetWrapper>
             <Card
-              key={cardDataItem.count}
+              key={index}
               className="flex justify-between px-[1rem] h-auto  items-center  py-[1rem] gap-[1rem] "
             >
               <div className="flex flex-col  ">
@@ -58,16 +61,19 @@ const Analytics = () => {
           <div className="w-full    p-[2rem] border rounded-lg ">
             <PieChart
               data={pieChartData}
-              title={i18n.t("component.home.text.leadStatus", "Lead Status")}
+              title={i18n.t(
+                "component.home.text.projectStatus",
+                "Project Status"
+              )}
             />
           </div>
         </WidgetWrapper>
-        {/* <WidgetWrapper>
+        <WidgetWrapper>
           <div className="w-full p-[2rem] border rounded-lg ">
             <AreaCharts />
           </div>
-        </WidgetWrapper> */}
-        {/* <WidgetWrapper>
+        </WidgetWrapper>
+        <WidgetWrapper>
           <BasicTable<
             IUpcomingDeadlineTableProps["tableCaption"],
             IUpcomingDeadlineColumn,
@@ -75,8 +81,8 @@ const Analytics = () => {
           >
             {...upcomingDeadlineData}
           />
-        </WidgetWrapper> */}
-        {/* <WidgetWrapper>
+        </WidgetWrapper>
+        <WidgetWrapper>
           <BasicTable<
             IOverdueProjectTableProps["tableCaption"],
             IOverdueProjectColumn,
@@ -84,9 +90,9 @@ const Analytics = () => {
           >
             {...overdueProjectData}
           />
-        </WidgetWrapper> */}
+        </WidgetWrapper>
 
-        {/* <WidgetWrapper>
+        <WidgetWrapper>
           <div className="w-full col-span-2  p-[2rem] border rounded-lg ">
             <BarChart
               title={i18n.t(
@@ -96,7 +102,7 @@ const Analytics = () => {
               data={barChartData}
             />
           </div>
-        </WidgetWrapper> */}
+        </WidgetWrapper>
 
         <WidgetWrapper>
           <div className="w-full col-span-2  p-[2rem] border rounded-lg ">
