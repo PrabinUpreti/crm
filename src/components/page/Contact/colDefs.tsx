@@ -1,22 +1,26 @@
 import { IProjectRowData } from "@/@types";
 import {
+  CallIconOutlined,
   EditIcon,
+  EmailIconOutlined,
   TrashIcon,
+  WhatsAppIconOutlined,
 } from "@/components/custom/common/icons/commonIcons";
 import Tags from "@/components/custom/common/Tags/Tags";
-import { getTagVariantForValues } from "@/lib/utils";
+import { getTagVariantForContacts } from "@/lib/utils";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 export const colDefs = [
   {
-    field: "first_name",
+    field: ["first_name"],
+
     headerCheckboxSelection: true,
     headerName: "First Name",
     checkboxSelection: true,
     cellRenderer: (p: { value: string; data: IProjectRowData }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return (
-        <Link className="hover:underline" to={`/contact/${p.data.id}`}>
+        <Link className="hover:underline" to={`/crm/contact/${p.data.id}`}>
           {p.value}
         </Link>
       );
@@ -40,6 +44,19 @@ export const colDefs = [
     headerName: "Address",
   },
   {
+    field: "customer_type",
+    headerName: "Type",
+    cellRenderer: (p: { value: string }) => {
+      console.log(p);
+
+      return (
+        <div>
+          <Tags value={p.value} variant={getTagVariantForContacts(p.value)} />
+        </div>
+      );
+    },
+  },
+  {
     field: "Actions",
     editable: false,
     floatingFilter: false,
@@ -57,6 +74,18 @@ export const colDefs = [
           <EditIcon
             id={p.data.id}
             className="text-primary text-lg cursor-pointer"
+          />
+          <EmailIconOutlined
+            id={p.data.id}
+            className="text-accent-foreground text-lg cursor-pointer"
+          />
+          <CallIconOutlined
+            id={p.data.id}
+            className="text-accent-foreground text-lg cursor-pointer"
+          />
+          <WhatsAppIconOutlined
+            id={p.data.id}
+            className="text-accent-foreground text-lg cursor-pointer"
           />
         </div>
       );

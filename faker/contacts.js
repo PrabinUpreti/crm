@@ -9,13 +9,13 @@ function createRandomContacts(value) {
     address: `${faker.location.city()}, ${faker.location.country()}, ${faker.location.streetAddress()}`,
     phone: faker.phone.number(),
     profile_link: faker.internet.url(),
-    customer_type: faker.helpers.arrayElement(["A", "B", "C", "D", "E"]),
-    industry: faker.company.name(),
-    lead_status: faker.helpers.arrayElement([
-      "New",
-      "Qualified",
+    customer_type: faker.helpers.arrayElement([
+      "Lead",
       "Opportunity",
+      "Customer",
+      "Advocate",
     ]),
+    industry: faker.company.name(),
 
     created_by: faker.date.past(),
   };

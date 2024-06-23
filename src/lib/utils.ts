@@ -58,3 +58,19 @@ export const getTagVariantForValues = (value: string) => {
       return "purple";
   }
 };
+
+export const getTagVariantForContacts = (value: string) => {
+  value = value?.toLowerCase();
+  switch (value) {
+    case "lead":
+      return "red";
+    case "opportunity":
+      return "yellow";
+    case "customer":
+      return "purple";
+    case "advocate":
+      return "green";
+    default:
+      return "default";
+  }
+};

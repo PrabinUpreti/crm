@@ -60,6 +60,9 @@ import { GoMilestone } from "react-icons/go";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { RiContactsBook3Line } from "react-icons/ri";
 import { BsGraphUpArrow } from "react-icons/bs";
+import { TfiEmail } from "react-icons/tfi";
+import { LuPhoneCall } from "react-icons/lu";
+import { FaWhatsapp } from "react-icons/fa";
 
 export {
   FaRegCircleDot as GoalsIcon,
@@ -126,4 +129,7 @@ export {
   GoMilestone as MilestoneIcon,
   RiContactsBook3Line as ContactIconOutlined,
   BsGraphUpArrow as LeadIconOutlined,
+  TfiEmail as EmailIconOutlined,
+  LuPhoneCall as CallIconOutlined,
+  FaWhatsapp as WhatsAppIconOutlined,
 };
