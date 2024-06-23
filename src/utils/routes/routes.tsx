@@ -22,6 +22,7 @@ import AccountSettingPage from "@/pages/Setting/AccountSettingPage";
 import ProfileSettingPage from "@/pages/Setting/ProfileSettingPage";
 import PreferencesSettingPage from "@/pages/Setting/PreferencesSettingPage";
 import TaskDetailPage from "@/pages/Task/TaskDetailPage";
+import ContactPage from "@/pages/Contact/Contact";
 
 // setting routes
 export const settingRoutes = [
@@ -81,7 +82,7 @@ export const crmModuleRoutes = [
   // bookmark related routes
   {
     path: `/crm/contact`,
-    element: BookmarksPage,
+    element: ContactPage,
     pageTitle: pageTitles.crmContactPage,
     crumbs: () => [
       { label: { key: ``, fallback: `Contact` }, path: `contact` },

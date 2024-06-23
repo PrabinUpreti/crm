@@ -98,11 +98,11 @@ const Analytics = () => {
           </div>
         </WidgetWrapper> */}
 
-        <WidgetWrapper>
+        {/* <WidgetWrapper>
           <div className="w-full col-span-2  p-[2rem] border rounded-lg ">
             <LineChart />
           </div>
-        </WidgetWrapper>
+        </WidgetWrapper> */}
       </div>
     </div>
   );

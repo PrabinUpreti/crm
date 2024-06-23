@@ -11,7 +11,7 @@ import { createNSubTasks } from "./subTasks.js";
 import { createNTasks } from "./task.js";
 import { createNProjects } from "./project.js";
 import { createNTimeTrackings } from "./timeTracking.js";
-import { createNRandomContact } from "./contact.js";
+import { createNRandomContacts } from "./contacts.js";
 
 (() => {
   fs.writeFileSync(
@@ -29,7 +29,7 @@ import { createNRandomContact } from "./contact.js";
       tasks: createNTasks(22),
       projects: createNProjects(22),
       timeTrackings: createNTimeTrackings(22),
-      contact: createNRandomContact(22),
+      contacts: createNRandomContacts(22),
     })
   );
 })();

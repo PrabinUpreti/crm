@@ -13,6 +13,7 @@ import { subTaskApi } from "@/api/subTask";
 import { timeTrackingsApi } from "@/api/timeTracking";
 import { archiveApi } from "@/api/archives";
 import { userApi } from "@/api/user";
+import { contactApi } from "@/api/contact";
 const store = configureStore({
   reducer: {
     app: appReducer,
@@ -28,6 +29,7 @@ const store = configureStore({
     [timeTrackingsApi.reducerPath]: timeTrackingsApi.reducer,
     [archiveApi.reducerPath]: archiveApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [contactApi.reducerPath]: contactApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -42,7 +44,8 @@ const store = configureStore({
       subTaskApi.middleware,
       timeTrackingsApi.middleware,
       archiveApi.middleware,
-      userApi.middleware
+      userApi.middleware,
+      contactApi.middleware
     ),
 });
 
