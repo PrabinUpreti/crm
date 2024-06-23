@@ -33,7 +33,7 @@ const ContactTable = ({ contacts }: { contacts: IContact[] }) => {
               isSideBarVisible={isSideBarVisible}
               setSideBarVisible={setSideBarVisible}
               // createButtonText={null}
-              // createPagePath="/workspace/:workspaceId/bookmark/:bookmarkId/task/create"
+              createPagePath="/crm/contact/create"
             />
           );
         }}

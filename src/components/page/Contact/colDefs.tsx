@@ -1,8 +1,12 @@
 import { IProjectRowData } from "@/@types";
+import { IContact } from "@/@types/crm";
 import {
   CallIconOutlined,
   EditIcon,
   EmailIconOutlined,
+  FacebookIconOutlined,
+  InstagramIconOutlined,
+  LinkIconOutlined,
   TrashIcon,
   WhatsAppIconOutlined,
 } from "@/components/custom/common/icons/commonIcons";
@@ -12,32 +16,25 @@ import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 export const colDefs = [
   {
-    field: ["first_name"],
+    field: "first_name",
 
     headerCheckboxSelection: true,
-    headerName: "First Name",
+    headerName: "Name",
     checkboxSelection: true,
-    cellRenderer: (p: { value: string; data: IProjectRowData }) => {
+    cellRenderer: (p: { value: string; data: IContact }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return (
         <Link className="hover:underline" to={`/crm/contact/${p.data.id}`}>
-          {p.value}
+          {p.data.first_name} {p.data.last_name}
         </Link>
       );
     },
   },
   // { field: "createdBy", headerName: "Created By" },
-  {
-    field: "last_name",
-    headerName: "Last Name",
-  },
+
   {
     field: "phone",
     headerName: "Phone",
-  },
-  {
-    field: "email",
-    headerName: "Email",
   },
   {
     field: "address",
@@ -47,8 +44,6 @@ export const colDefs = [
     field: "customer_type",
     headerName: "Type",
     cellRenderer: (p: { value: string }) => {
-      console.log(p);
-
       return (
         <div>
           <Tags value={p.value} variant={getTagVariantForContacts(p.value)} />
@@ -56,6 +51,7 @@ export const colDefs = [
       );
     },
   },
+
   {
     field: "Actions",
     editable: false,
@@ -64,7 +60,7 @@ export const colDefs = [
     enablePivot: false,
     headerCheckboxSelection: false,
 
-    cellRenderer: (p: { value: string; data: IProjectRowData }) => {
+    cellRenderer: (p: { value: string; data: IContact }) => {
       return (
         <div className="flex gap-4 items-center justify-start  h-full">
           <TrashIcon

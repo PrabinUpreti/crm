@@ -63,6 +63,8 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { TfiEmail } from "react-icons/tfi";
 import { LuPhoneCall } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
+import { RiFacebookBoxLine } from "react-icons/ri";
+import { FaInstagram } from "react-icons/fa";
 
 export {
   FaRegCircleDot as GoalsIcon,
@@ -132,4 +134,6 @@ export {
   TfiEmail as EmailIconOutlined,
   LuPhoneCall as CallIconOutlined,
   FaWhatsapp as WhatsAppIconOutlined,
+  RiFacebookBoxLine as FacebookIconOutlined,
+  FaInstagram as InstagramIconOutlined,
 };

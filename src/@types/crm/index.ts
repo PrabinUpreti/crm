@@ -5,7 +5,11 @@ export interface IContact {
   email: string;
   addresss: string;
   phone: string;
-  profile_link: string;
+  profile_link: {
+    facebook?: string;
+    instagram?: string;
+    website?: string;
+  };
   customer_type: string;
   industry: string;
   created_by: string;

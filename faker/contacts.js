@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 
+// keys = ["facebook", "instagram", "website"];
 function createRandomContacts(value) {
   return {
     id: faker.string.uuid(),
@@ -8,7 +9,29 @@ function createRandomContacts(value) {
     email: faker.internet.email(),
     address: `${faker.location.city()}, ${faker.location.country()}, ${faker.location.streetAddress()}`,
     phone: faker.phone.number(),
-    profile_link: faker.internet.url(),
+    profile_link: faker.helpers.arrayElement([
+      {},
+      { facebook: faker.internet.url() },
+      {
+        facebook: faker.internet.url(),
+        instagram: faker.internet.url(),
+      },
+      {
+        facebook: faker.internet.url(),
+        instagram: faker.internet.url(),
+        website: faker.internet.url(),
+      },
+      {
+        instagram: faker.internet.url(),
+        website: faker.internet.url(),
+      },
+      {
+        facebook: faker.internet.url(),
+
+        website: faker.internet.url(),
+      },
+    ]),
+
     customer_type: faker.helpers.arrayElement([
       "Lead",
       "Opportunity",

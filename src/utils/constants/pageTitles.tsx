@@ -5,6 +5,7 @@ export const pageTitles = {
   accessDeniedPage: `PMS | Access Denied`,
   crmAnalyticsPage: `CRM | Dashboard`,
   crmContactPage: `CRM | Contact`,
+  crmCreateContactPage: `CRM | Contact | Create`,
   crmLeadPage: `CRM | Lead`,
   settingPage: `PMS | Settings`,
   settingAccountPage: `PMS | Settings | Account`,
