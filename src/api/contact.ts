@@ -1,14 +1,14 @@
 import { IContact } from "@/@types/crm";
-import { BASE_URL } from "@/utils/constants";
+import { REAL_API_BASE_URL } from "@/utils/constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const contactApi = createApi({
   reducerPath: "contact",
-  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${REAL_API_BASE_URL}` }),
   tagTypes: ["Contacts"],
   endpoints: (build) => ({
     getContacts: build.query<IContact[], string>({
-      query: () => "contacts",
+      query: () => "/contact/contact/",
       providesTags: (result) =>
         result
           ? [

@@ -21,10 +21,10 @@ export const colDefs = [
     headerCheckboxSelection: true,
     headerName: "Name",
     checkboxSelection: true,
-    cellRenderer: (p: { value: string; data: IContact }) => {
+    cellRenderer: (p: { data: IContact }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return (
-        <Link className="hover:underline" to={`/crm/contact/${p.data.id}`}>
+        <Link className="hover:underline" to={`/crm/contact/${p.data.uuid}`}>
           {p.data.first_name} {p.data.last_name}
         </Link>
       );
@@ -39,9 +39,22 @@ export const colDefs = [
   {
     field: "address",
     headerName: "Address",
+    cellRenderer: (p: { data: IContact }) => {
+      return (
+        <div>
+          <p>
+            {p.data.city} {p.data.country}
+          </p>
+        </div>
+      );
+    },
   },
   {
-    field: "customer_type",
+    field: "company_name",
+    headerName: "Company",
+  },
+  {
+    field: "opportunity",
     headerName: "Type",
     cellRenderer: (p: { value: string }) => {
       return (

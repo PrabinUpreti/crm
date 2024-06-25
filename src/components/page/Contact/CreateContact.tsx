@@ -15,7 +15,9 @@ import { Button } from "@/components/ui/Button/button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select/select";
@@ -31,46 +33,90 @@ import {
 import { AutosizeTextarea } from "@/components/custom/common/FormElements/AutosizeTextArea/AutosizeTextArea";
 import TagInput from "@/components/custom/common/FormElements/Input/TagInput/TagInput";
 import TextInput from "@/components/custom/common/FormElements/Input/TextInput/TextInput";
+import { PhoneInput } from "@/components/custom/common/FormElements/PhoneInput/PhoneInput";
+import { Label } from "@/components/ui/Label/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/Dropdown/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/Collapsible/collapsible";
 
 const CreateContact: React.FC = () => {
   // const { workspaceId } = useParams();
-
   const formSchema = z.object({
     first_name: z.string().min(2).max(100),
     last_name: z.string().min(2).max(100),
+    organization: z.string(),
+    email: z.string().email(),
+    city: z.string().min(2).max(16),
+    street: z.string().min(2).max(16),
+    country: z.string().min(2).max(16),
+    phone: z
+      .string()
+      .regex(/^(\+?\d{1,3}[-.\s]?)?(\d{3}[-.\s]?\d{3}[-.\s]?\d{4})$/),
 
-    type: z.string(),
-    workspace: z.string(),
-    teamMembers: z.array(z.string()),
-    priority: z.string(),
-    totalBudget: z.string(),
-    inventories: z.array(z.string()),
-    equipments: z.array(z.string()),
-    projectDescription: z.string().min(10).max(1000),
-    tags: z.array(
+    company_name: z.string().max(100),
+    company_position: z.string(),
+    next_comms_date: z.string(),
+    background_field: z.string(),
+    social_media_links: z.object({
+      facebook: z.string().url(),
+      x: z.string().url(),
+      linkedin: z.string().url(),
+      instagram: z.string().url(),
+      tiktok: z.string().url(),
+      snapchat: z.string().url(),
+      website: z.string().url(),
+    }),
+    source: z.array(
       z.object({
         id: z.string(),
         text: z.string(),
       })
     ),
+    opportunity: z.string(),
+    category: z.string(),
   });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      type: "",
-      workspace: "",
-      teamMembers: [],
-      priority: "",
-      totalBudget: "0",
-      inventories: [],
-      equipments: [],
-      projectDescription: "",
-      tags: [],
+      first_name: "",
+      last_name: "",
+      organization: "",
+      email: "",
+      city: "",
+      street: "",
+      country: "",
+      phone: "",
+      company_name: "",
+      company_position: "",
+      next_comms_date: "",
+      background_field: "",
+      social_media_links: {
+        facebook: "",
+        x: "",
+        linkedin: "",
+        instagram: "",
+        tiktok: "",
+        snapchat: "",
+        website: "",
+      },
+      source: [],
+      opportunity: "",
+      category: "",
     },
   });
+  console.log(form, "FORM HOOKS");
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -81,34 +127,264 @@ const CreateContact: React.FC = () => {
 
   return (
     <ShadForm {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <h1 className="text-bold text-xl mt-[2rem]">Create a Project</h1>
-        <FormField
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+        <h1 className="text-bold text-xl mt-[2rem]">Create Customer</h1>
+        <div className="grid grid-cols-2  gap-5">
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <TextInput placeholder="Prabin" {...field} id="first_name" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <TextInput placeholder="Upreti" {...field} id="last_name" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <TextInput
+                    placeholder="xyz@gmail.com"
+                    {...field}
+                    id="email"
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <PhoneInput placeholder="98453xxxxx" {...field} id="phone" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-3 col-span-2 gap-2 ">
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <TextInput placeholder="Country" {...field} id="country" />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <br />
+                  </FormLabel>
+
+                  <FormControl>
+                    <TextInput placeholder="City" {...field} id="city" />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="street"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <br />
+                  </FormLabel>
+
+                  <FormControl>
+                    <TextInput placeholder="Street" {...field} id="street" />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="company_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Name</FormLabel>
+                <FormControl>
+                  <TextInput
+                    placeholder="Company Name"
+                    {...field}
+                    id="company_name"
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="company_position"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Position</FormLabel>
+                <FormControl>
+                  <TextInput
+                    placeholder="CEO"
+                    {...field}
+                    id="company_position"
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="source"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Source</FormLabel>
+                <FormControl>
+                  <TagInput
+                    {...field}
+                    placeholder="Enter a topic"
+                    className=""
+                    tags={field.value}
+                    setTags={field.onChange}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="social_media_links"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Add Social Media Links</FormLabel>
+
+                <FormControl>
+                  <div className="">
+                    <Collapsible>
+                      <CollapsibleTrigger className=" text-gray-500 font-extralight w-full  p-[0.4rem] text-left border rounded-md">
+                        Add Social Media Links
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <div className="grid grid-cols-4  items-center gap-2 mt-5 border rounded-md p-5">
+                          <FormLabel>Facebook</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.facebook}
+                            id="social_media_links"
+                          />
+                          <FormLabel>X</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.x}
+                            id="social_media_links"
+                          />
+                          <FormLabel>LinkedIn</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.linkedin}
+                            id="social_media_links"
+                          />
+                          <FormLabel>Instagram</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.instagram}
+                            id="social_media_links"
+                          />
+                          <FormLabel>TikTok</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.tiktok}
+                            id="social_media_links"
+                          />
+                          <FormLabel>Snapchat</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.snapchat}
+                            id="social_media_links"
+                          />
+                          <FormLabel>Website</FormLabel>
+                          <TextInput
+                            className="col-span-3"
+                            placeholder="https://facebook.com"
+                            {...field.value.website}
+                            id="social_media_links"
+                          />
+                        </div>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* <FormField
           control={form.control}
-          name="name"
+          name="last_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Project Name</FormLabel>
-              <FormControl>
-                <TextInput
-                  placeholder="Eg. Project 1"
-                  {...field}
-                  id="name"
-                  // name="name"
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Type</FormLabel>
+              <FormLabel>Last Name</FormLabel>
               <FormControl>
                 <Select {...field} onValueChange={field.onChange}>
                   <SelectTrigger>
@@ -128,9 +404,9 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <FormField
+          {/* <FormField
           control={form.control}
           name="workspace"
           render={({ field }) => (
@@ -153,9 +429,9 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <FormField
+          {/* <FormField
           control={form.control}
           name="teamMembers"
           render={({ field }) => (
@@ -163,8 +439,6 @@ const CreateContact: React.FC = () => {
               <FormLabel>Team Members</FormLabel>
               <FormControl>
                 <MultiSelector
-                  //  asChild
-                  // {...field}
                   values={field.value}
                   onValuesChange={field.onChange}
                 >
@@ -190,8 +464,8 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+          {/* <FormField
           control={form.control}
           name="priority"
           render={({ field }) => (
@@ -213,9 +487,9 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <FormField
+          {/* <FormField
           control={form.control}
           name="totalBudget"
           render={({ field }) => (
@@ -228,8 +502,8 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+          {/* <FormField
           control={form.control}
           name="inventories"
           render={({ field }) => (
@@ -237,8 +511,6 @@ const CreateContact: React.FC = () => {
               <FormLabel>Inventories</FormLabel>
               <FormControl>
                 <MultiSelector
-                  //  asChild
-                  // {...field}
                   values={field.value}
                   onValuesChange={field.onChange}
                 >
@@ -264,8 +536,8 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <FormField
+        /> */}
+          {/* <FormField
           control={form.control}
           name="equipments"
           render={({ field }) => (
@@ -273,8 +545,6 @@ const CreateContact: React.FC = () => {
               <FormLabel>Equipments</FormLabel>
               <FormControl>
                 <MultiSelector
-                  //  asChild
-                  // {...field}
                   values={field.value}
                   onValuesChange={field.onChange}
                 >
@@ -300,9 +570,9 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <FormField
+          {/* <FormField
           control={form.control}
           name="projectDescription"
           render={({ field }) => (
@@ -320,11 +590,8 @@ const CreateContact: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-
-        {/* tags */}
-
-        <FormField
+        /> */}
+          {/* <FormField
           control={form.control}
           name="tags"
           render={({ field }) => (
@@ -336,18 +603,15 @@ const CreateContact: React.FC = () => {
                   placeholder="Enter a topic"
                   className=" py-[1.5rem]"
                   tags={field.value}
-                  setTags={field.onChange} //   setTags={(newTags) => {
-                  //     setTags(newTags);
-                  //     setValue("topics", newTags as [Tag, ...Tag[]]);
-                  //   }}
+                  setTags={field.onChange}
                 />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
-        />
-
+        /> */}
+        </div>
         <Button type="submit">Submit</Button>
       </form>
     </ShadForm>

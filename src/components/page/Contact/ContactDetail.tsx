@@ -61,12 +61,12 @@ import Spinner from "@/components/custom/common/Loaders/Spinner/Spinner";
 import ContactTable from "./Table";
 import { useGetContactsQuery } from "@/api/contact";
 const ContactDetail = () => {
-  const { data: contacts, isLoading } = useGetContactsQuery(``);
-  console.log(contacts, "project data");
-  if (isLoading || !contacts) return <Spinner />;
+  const { data, isLoading } = useGetContactsQuery(``);
+  console.log(data, "project data");
+  if (isLoading || !data) return <Spinner />;
   return (
     <div className="my-[2rem]">
-      <ContactTable contacts={contacts} />,
+      <ContactTable contacts={data} />,
     </div>
   );
 };
