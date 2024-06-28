@@ -1,19 +1,14 @@
-import { IProjectRowData } from "@/@types";
 import { IContact } from "@/@types/crm";
 import {
   CallIconOutlined,
   EditIcon,
   EmailIconOutlined,
-  FacebookIconOutlined,
-  InstagramIconOutlined,
-  LinkIconOutlined,
   TrashIcon,
   WhatsAppIconOutlined,
 } from "@/components/custom/common/icons/commonIcons";
 import Tags from "@/components/custom/common/Tags/Tags";
 import { getTagVariantForContacts } from "@/lib/utils";
-import moment from "moment";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 export const colDefs = [
   {
     field: "first_name",
@@ -39,6 +34,7 @@ export const colDefs = [
   {
     field: "address",
     headerName: "Address",
+    filter: "agTextFilterColumn",
     cellRenderer: (p: { data: IContact }) => {
       return (
         <div>
@@ -52,17 +48,21 @@ export const colDefs = [
   {
     field: "company_name",
     headerName: "Company",
+    filter: "agSelectFilterColumn",
   },
   {
-    field: "opportunity",
-    headerName: "Type",
+    field: "category",
+    headerName: "Contact Category",
     cellRenderer: (p: { value: string }) => {
+      if (!p.value)
+        return <div className="flex items-center justify-center">-</div>;
       return (
         <div>
           <Tags value={p.value} variant={getTagVariantForContacts(p.value)} />
         </div>
       );
     },
+    filter: "agSelectFilterColumn",
   },
 
   {

@@ -1,8 +1,8 @@
 import AgGridTable from "@/components/custom/common/Tables/AgGridTable/AgGridTable";
 import { colDefs } from "./colDefs";
 import TableToolbar from "@/components/custom/common/TableElements/TableToolbar/TableToolbar";
-import { ITaskRowData } from "@/@types";
 import { IContact } from "@/@types/crm";
+import { ProjectsTableSearch } from "@/utils/constants";
 
 const dropdownMenus = {
   items: [
@@ -28,6 +28,7 @@ const ContactTable = ({ contacts }: { contacts: IContact[] }) => {
             <TableToolbar
               heading={`Contacts`}
               hasSearch={true}
+              search={<ProjectsTableSearch handleSearch={handleSearch} />}
               handleSearch={handleSearch}
               dropdownMenus={dropdownMenus}
               isSideBarVisible={isSideBarVisible}

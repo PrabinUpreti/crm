@@ -43,6 +43,8 @@ const TableToolbar: React.FC<ITableToolbar> = ({
   isSideBarVisible,
   setSideBarVisible,
 }) => {
+  console.log(hasSearch, "hasSearch");
+
   return (
     <div>
       <div className="flex items-end w-full justify-between ">

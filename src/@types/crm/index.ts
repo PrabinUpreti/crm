@@ -14,16 +14,8 @@ export interface IContact {
   company_position?: null | string;
   next_comms_date?: null | string;
   background_field: string;
-  social_media_links: {
-    facebook?: string;
-    x?: string;
-    linkedin?: string;
-    instagram?: string;
-    tiktok?: string;
-    snapchat?: string;
-    website?: string;
-  };
-  source: Tag[];
+  social_media_links: { type: string; url: string }[];
+  source: string[];
   opportunity: string;
   created_at: string;
   updated_at: string;

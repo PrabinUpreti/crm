@@ -5,13 +5,16 @@ export interface ITagInput {
   className: string;
   tags: Tag[];
   setTags: () => void;
-  // field: ControllerRenderProps;
+  activeTagIndex: number;
+  setActiveTagIndex: () => void;
 }
 const TagInput: React.FC<ITagInput> = ({
   placeholder,
   className,
   tags,
   setTags,
+  activeTagIndex,
+  setActiveTagIndex,
   ...props
 }) => {
   return (
@@ -20,10 +23,9 @@ const TagInput: React.FC<ITagInput> = ({
       placeholder={placeholder}
       tags={tags}
       className={className}
-      setTags={setTags} //   setTags={(newTags) => {
-      //     setTags(newTags);
-      //     setValue("topics", newTags as [Tag, ...Tag[]]);
-      //   }}
+      setTags={setTags}
+      activeTagIndex={activeTagIndex}
+      setActiveTagIndex={setActiveTagIndex}
     />
   );
 };

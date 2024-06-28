@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -15,75 +15,60 @@ import { Button } from "@/components/ui/Button/button";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select/select";
-import NumberInput from "@/components/custom/common/FormElements/Input/NumberInput/NumberInput";
-import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorTrigger,
-  MultiSelectorList,
-} from "@/components/custom/common/FormElements/Select/MultiSelect/MultiSelect";
-import { AutosizeTextarea } from "@/components/custom/common/FormElements/AutosizeTextArea/AutosizeTextArea";
 import TagInput from "@/components/custom/common/FormElements/Input/TagInput/TagInput";
 import TextInput from "@/components/custom/common/FormElements/Input/TextInput/TextInput";
 import { PhoneInput } from "@/components/custom/common/FormElements/PhoneInput/PhoneInput";
-import { Label } from "@/components/ui/Label/label";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/Dropdown/dropdown-menu";
+  Sortable,
+  SortableDragHandle,
+  SortableItem,
+} from "@/components/custom/common/Sortable/Sortable";
+import { Skeleton } from "@/components/ui/Skeleton/skeleton";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/Collapsible/collapsible";
+  PlusIcon,
+  TrashIcon,
+} from "@/components/custom/common/icons/commonIcons";
+import { useAddContactMutation } from "@/api/contact";
+import Spinner from "@/components/custom/common/Loaders/Spinner/Spinner";
 
 const CreateContact: React.FC = () => {
-  // const { workspaceId } = useParams();
+  // form schema
+  const [addContact, { isLoading }] = useAddContactMutation();
   const formSchema = z.object({
     first_name: z.string().min(2).max(100),
     last_name: z.string().min(2).max(100),
     organization: z.string(),
     email: z.string().email(),
-    city: z.string().min(2).max(16),
-    street: z.string().min(2).max(16),
-    country: z.string().min(2).max(16),
+    city: z.string().min(2).max(30),
+    street: z.string().min(2).max(30),
+    country: z.string().min(2).max(30),
     phone: z
       .string()
       .regex(/^(\+?\d{1,3}[-.\s]?)?(\d{3}[-.\s]?\d{3}[-.\s]?\d{4})$/),
 
     company_name: z.string().max(100),
     company_position: z.string(),
-    next_comms_date: z.string(),
-    background_field: z.string(),
-    social_media_links: z.object({
-      facebook: z.string().url(),
-      x: z.string().url(),
-      linkedin: z.string().url(),
-      instagram: z.string().url(),
-      tiktok: z.string().url(),
-      snapchat: z.string().url(),
-      website: z.string().url(),
-    }),
+    social_media_links: z.array(
+      z.object({
+        type: z.string(),
+        url: z.string(),
+      })
+    ),
     source: z.array(
       z.object({
         id: z.string(),
         text: z.string(),
       })
     ),
-    opportunity: z.string(),
-    category: z.string(),
+    background_field: z.string(),
+    // opportunity: z.string(),
+    // category: z.string().nullable(),
+    // next_comms_date: z.date(),
   });
 
   // 1. Define your form.
@@ -100,30 +85,33 @@ const CreateContact: React.FC = () => {
       phone: "",
       company_name: "",
       company_position: "",
-      next_comms_date: "",
       background_field: "",
-      social_media_links: {
-        facebook: "",
-        x: "",
-        linkedin: "",
-        instagram: "",
-        tiktok: "",
-        snapchat: "",
-        website: "",
-      },
+      social_media_links: [],
       source: [],
-      opportunity: "",
-      category: "",
+      // opportunity: "",
+      // category: null,
+      // next_comms_date: new Date(Date.now()),
     },
   });
   console.log(form, "FORM HOOKS");
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
+    const source = values.source.map((sourceItem) => sourceItem.text);
+    const payload = {
+      ...values,
+      organization: Number(1),
+      source,
+    };
+    await addContact(payload);
   }
+  const { fields, append, move, remove } = useFieldArray({
+    control: form.control,
+    name: "social_media_links",
+  });
 
   return (
     <ShadForm {...form}>
@@ -137,7 +125,11 @@ const CreateContact: React.FC = () => {
               <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
-                  <TextInput placeholder="Prabin" {...field} id="first_name" />
+                  <TextInput
+                    placeholder="First Name"
+                    {...field}
+                    id="first_name"
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -152,7 +144,11 @@ const CreateContact: React.FC = () => {
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
-                  <TextInput placeholder="Upreti" {...field} id="last_name" />
+                  <TextInput
+                    placeholder="Last Name"
+                    {...field}
+                    id="last_name"
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -296,6 +292,26 @@ const CreateContact: React.FC = () => {
                     className=""
                     tags={field.value}
                     setTags={field.onChange}
+                    activeTagIndex={field.value.length - 1}
+                    setActiveTagIndex={() => {}}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="background_field"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background Field</FormLabel>
+                <FormControl>
+                  <TextInput
+                    placeholder="CEO"
+                    {...field}
+                    id="background_field"
                   />
                 </FormControl>
 
@@ -304,315 +320,139 @@ const CreateContact: React.FC = () => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="social_media_links"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Add Social Media Links</FormLabel>
+          {/* <SortableArrayField /> */}
 
-                <FormControl>
-                  <div className="">
-                    <Collapsible>
-                      <CollapsibleTrigger className=" text-gray-500 font-extralight w-full  p-[0.4rem] text-left border rounded-md">
-                        Add Social Media Links
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <div className="grid grid-cols-4  items-center gap-2 mt-5 border rounded-md p-5">
-                          <FormLabel>Facebook</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.facebook}
-                            id="social_media_links"
-                          />
-                          <FormLabel>X</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.x}
-                            id="social_media_links"
-                          />
-                          <FormLabel>LinkedIn</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.linkedin}
-                            id="social_media_links"
-                          />
-                          <FormLabel>Instagram</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.instagram}
-                            id="social_media_links"
-                          />
-                          <FormLabel>TikTok</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.tiktok}
-                            id="social_media_links"
-                          />
-                          <FormLabel>Snapchat</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.snapchat}
-                            id="social_media_links"
-                          />
-                          <FormLabel>Website</FormLabel>
-                          <TextInput
-                            className="col-span-3"
-                            placeholder="https://facebook.com"
-                            {...field.value.website}
-                            id="social_media_links"
-                          />
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
+          <div className="flex w-full max-w-4xl flex-col gap-4 border rounded-lg p-[1rem] col-span-2">
+            <div className="space-y-1 ">
+              <h4>Social media links</h4>
+              <p className="text-[0.8rem] text-muted-foreground">
+                Add social media links
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Sortable
+                value={fields}
+                onMove={({ activeIndex, overIndex }) =>
+                  move(activeIndex, overIndex)
+                }
+                overlay={
+                  <div className="grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2">
+                    <Skeleton className="h-8 w-full rounded-sm" />
+                    <Skeleton className="h-8 w-full rounded-sm" />
+                    <Skeleton className="size-8 shrink-0 rounded-sm" />
+                    <Skeleton className="size-8 shrink-0 rounded-sm" />
                   </div>
-                </FormControl>
+                }
+              >
+                <div className="w-full space-y-2">
+                  {fields.map((field, index) => (
+                    <SortableItem key={field.id} value={field.id} asChild>
+                      <div className="grid grid-cols-[0.5fr,1fr,auto,auto] items-center gap-2">
+                        <FormField
+                          control={form.control}
+                          name={`social_media_links.${index}.type`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Select
+                                  {...field}
+                                  onValueChange={field.onChange}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder={`Facebook`} />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Facebook">
+                                      Facebook
+                                    </SelectItem>
+                                    <SelectItem value="Instagram">
+                                      Instagram
+                                    </SelectItem>
+                                    <SelectItem value="Twitter">
+                                      Twitter
+                                    </SelectItem>
+                                    <SelectItem value="LinkedIn">
+                                      LinkedIn
+                                    </SelectItem>
+                                    <SelectItem value="Website">
+                                      Website
+                                    </SelectItem>
+                                    <SelectItem value="Tiktok">
+                                      Tiktok
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`social_media_links.${index}.url`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <TextInput
+                                  {...field}
+                                  id={`social_media_links.${index}.url`}
+                                  name={`social_media_links.${index}.url`}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* <FormField
-          control={form.control}
-          name="last_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Select {...field} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={`Information Technology`} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Information Technology">
-                      Information Technology
-                    </SelectItem>
-                    <SelectItem value="Construction">Construction</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Real Estate">Real Estate</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-          {/* <FormField
-          control={form.control}
-          name="workspace"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Workspace</FormLabel>
-              <FormControl>
-                <Select {...field}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Workspace 1" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Workspace1">Workspace1</SelectItem>
-                    <SelectItem value="Workspace2">Workspace2</SelectItem>
-                    <SelectItem value="Workspace3">Workspace3</SelectItem>
-                    <SelectItem value="Workspace4">Workspace4</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-          {/* <FormField
-          control={form.control}
-          name="teamMembers"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Team Members</FormLabel>
-              <FormControl>
-                <MultiSelector
-                  values={field.value}
-                  onValuesChange={field.onChange}
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput placeholder="Select team members" />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value="Member1">
-                        Member1
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Member2">
-                        Member2
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Member3">
-                        Member3
-                      </MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-          {/* <FormField
-          control={form.control}
-          name="priority"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Priority</FormLabel>
-              <FormControl>
-                <Select {...field}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Hgh" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="High">High</SelectItem>
-                    <SelectItem value="Medium">Medium</SelectItem>
-                    <SelectItem value="Low">Low</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-          {/* <FormField
-          control={form.control}
-          name="totalBudget"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Budget</FormLabel>
-              <FormControl>
-                <NumberInput placeholder="Eg.$100000" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-          {/* <FormField
-          control={form.control}
-          name="inventories"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Inventories</FormLabel>
-              <FormControl>
-                <MultiSelector
-                  values={field.value}
-                  onValuesChange={field.onChange}
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput placeholder="Select inventories" />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value="Inventory1">
-                        Inventory1
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Inventory2">
-                        Inventory2
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Inventory3">
-                        Inventory3
-                      </MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-          {/* <FormField
-          control={form.control}
-          name="equipments"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Equipments</FormLabel>
-              <FormControl>
-                <MultiSelector
-                  values={field.value}
-                  onValuesChange={field.onChange}
-                >
-                  <MultiSelectorTrigger>
-                    <MultiSelectorInput placeholder="Select equipments" />
-                  </MultiSelectorTrigger>
-                  <MultiSelectorContent>
-                    <MultiSelectorList>
-                      <MultiSelectorItem value="Equipment1">
-                        Equipment1
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Equipment2">
-                        Equipment2
-                      </MultiSelectorItem>
-                      <MultiSelectorItem value="Equipment3">
-                        Equipment3
-                      </MultiSelectorItem>
-                    </MultiSelectorList>
-                  </MultiSelectorContent>
-                </MultiSelector>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-          {/* <FormField
-          control={form.control}
-          name="projectDescription"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Description</FormLabel>
-              <FormControl>
-                <AutosizeTextarea
-                  placeholder="Enter project description..."
-                  {...field}
-                  id="projectDescription"
-                  maxHeight={300}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-          {/* <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Tags</FormLabel>
-              <FormControl>
-                <TagInput
-                  {...field}
-                  placeholder="Enter a topic"
-                  className=" py-[1.5rem]"
-                  tags={field.value}
-                  setTags={field.onChange}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+                        <SortableDragHandle
+                          variant="outline"
+                          size="icon"
+                          className="size-8 shrink-0"
+                        >
+                          <DragHandleDots2Icon
+                            className="size-4"
+                            aria-hidden="true"
+                          />
+                        </SortableDragHandle>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="size-8 shrink-0"
+                          onClick={() => remove(index)}
+                        >
+                          <TrashIcon
+                            className="size-4 text-destructive"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Remove</span>
+                        </Button>
+                      </div>
+                    </SortableItem>
+                  ))}
+                </div>
+              </Sortable>
+              <Button
+                type="button"
+                size="icon"
+                className="rounded-full"
+                onClick={() =>
+                  append({
+                    type: "Facebook",
+                    url: "",
+                  })
+                }
+              >
+                <PlusIcon />
+              </Button>
+            </div>
+          </div>
         </div>
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit" className="w-[100px]">
+          {isLoading ? (
+            <Spinner className="text-white" size={`small`} />
+          ) : (
+            `Submit`
+          )}
+        </Button>
       </form>
     </ShadForm>
   );

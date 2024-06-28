@@ -24,6 +24,10 @@ import PreferencesSettingPage from "@/pages/Setting/PreferencesSettingPage";
 import TaskDetailPage from "@/pages/Task/TaskDetailPage";
 import ContactPage from "@/pages/Contact/ContactPage";
 import CreateContactPage from "@/pages/Contact/CreateContactPage";
+import ContactDetailPage from "@/pages/Contact/ContactDetailPage";
+import GForm from "@/pages/GForm/GForm";
+import GFormTab from "@/pages/GForm/GFormTab";
+import EmailTemplatePage from "@/pages/EmailTemplate/EmailTemplatePage";
 
 // setting routes
 export const settingRoutes = [
@@ -91,12 +95,12 @@ export const crmModuleRoutes = [
   },
   {
     path: `/crm/contact/:contactId`,
-    element: BookmarkDetailPage,
-    pageTitle: pageTitles.crmContactPage,
+    element: ContactDetailPage,
+    pageTitle: pageTitles.crmContactDetailPage,
     crumbs: ({ contactId }: { contactId: string }) => [
       {
-        label: { key: ``, fallback: `Contact` },
-        path: `/contact/${contactId}`,
+        label: { key: ``, fallback: `Contact Details` },
+        path: `/crm/contact`,
       },
     ],
   },
@@ -106,6 +110,14 @@ export const crmModuleRoutes = [
     pageTitle: pageTitles.crmCreateContactPage,
     crumbs: () => [
       {
+        label: { key: ``, fallback: `Contact` },
+        path: `/crm/contact`,
+      },
+      {
+        label: { key: ``, fallback: `Create` },
+        path: `/crm/contact/create`,
+      },
+      {
         label: { key: ``, fallback: `Create` },
         path: `/crm/contact/create`,
       },
@@ -114,19 +126,30 @@ export const crmModuleRoutes = [
 
   // archive related routes
   {
-    path: `/crm/lead`,
-    element: ArchivesPage,
-    pageTitle: pageTitles.crmLeadPage,
-    crumbs: () => [{ label: { key: ``, fallback: `Lead` }, path: `/lead` }],
+    path: `/crm/form`,
+    element: GFormTab,
+    pageTitle: pageTitles.crmFormPage,
+    crumbs: () => [{ label: { key: ``, fallback: `Form` }, path: `/form` }],
   },
   {
-    path: `/crm/lead/:leadId`,
-    element: ArchiveDetailPage,
-    pageTitle: pageTitles.crmLeadPage,
+    path: `/crm/lead/:formId`,
+    element: GForm,
+    pageTitle: pageTitles.crmFormPage,
     crumbs: ({ leadId }: { leadId: string }) => [
       {
-        label: { key: ``, fallback: `Lead` },
-        path: `/lead/${leadId}`,
+        label: { key: ``, fallback: `Form` },
+        path: `/form/${leadId}`,
+      },
+    ],
+  },
+  {
+    path: `/crm/email-template`,
+    element: EmailTemplatePage,
+    pageTitle: pageTitles.crmFormPage,
+    crumbs: ({ leadId }: { leadId: string }) => [
+      {
+        label: { key: ``, fallback: `Form` },
+        path: `/form/${leadId}`,
       },
     ],
   },

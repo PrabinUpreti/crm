@@ -18,6 +18,9 @@ import {
   InventoryIconOutlined,
   ContactIconOutlined,
   LeadIconOutlined,
+  FormIconOutlined,
+  EmailIconOutlined,
+  EmailTemplateIconOutlined,
 } from "@/components/custom/common/icons/commonIcons";
 import i18n from "@/intl/i18n";
 
@@ -40,11 +43,18 @@ const otherModules = [
         icon: <ContactIconOutlined className="text-[1.1rem]" />,
       },
       {
-        id: "lead",
-        label: "Lead",
-        link: "/crm/lead",
-        icon: <LeadIconOutlined className="text-[1.1rem]" />,
+        id: "form",
+        label: "Form",
+        link: "/crm/form",
+        icon: <FormIconOutlined className="text-[1.1rem]" />,
       },
+      {
+        id: "email_template",
+        label: "Email Template",
+        link: "/crm/email-template",
+        icon: <EmailTemplateIconOutlined className="text-[1.1rem]" />,
+      },
+
       // {
       //   id: "opportunity",
       //   label: "Opportunity",

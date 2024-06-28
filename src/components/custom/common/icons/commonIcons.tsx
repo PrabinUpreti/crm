@@ -65,6 +65,8 @@ import { LuPhoneCall } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import { RiFacebookBoxLine } from "react-icons/ri";
 import { FaInstagram } from "react-icons/fa";
+import { LuClipboardCopy } from "react-icons/lu";
+import { MdOutlineAttachEmail } from "react-icons/md";
 
 export {
   FaRegCircleDot as GoalsIcon,
@@ -136,4 +138,6 @@ export {
   FaWhatsapp as WhatsAppIconOutlined,
   RiFacebookBoxLine as FacebookIconOutlined,
   FaInstagram as InstagramIconOutlined,
+  LuClipboardCopy as FormIconOutlined,
+  MdOutlineAttachEmail as EmailTemplateIconOutlined,
 };

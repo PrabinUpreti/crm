@@ -774,3 +774,15 @@ export interface IQuickAccessOptions {
   primaryOptions?: IPrimaryOption[];
   secondaryOptions?: ISecondaryOption[];
 }
+export interface IContactRowData {
+  first_name: string;
+  last_name: string;
+  opportunity: string;
+  category: string;
+  lastCommunicationDate: Date;
+  next_comms_date: Date;
+  phone: string;
+  email: string;
+  address: string;
+  background_field: string;
+}

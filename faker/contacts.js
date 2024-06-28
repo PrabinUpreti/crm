@@ -3,12 +3,18 @@ import { faker } from "@faker-js/faker";
 // keys = ["facebook", "instagram", "website"];
 function createRandomContacts(value) {
   return {
-    id: faker.string.uuid(),
+    uuid: faker.string.uuid(),
+    organization: number(1),
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
     email: faker.internet.email(),
-    address: `${faker.location.city()}, ${faker.location.country()}, ${faker.location.streetAddress()}`,
+    city: faker.location.city(),
+    street: faker.location.streetAddress(),
+    address: faker.location.country(),
     phone: faker.phone.number(),
+    company_name: faker.company.name(),
+    company_position: faker.person.jobType(),
+    next_comms_date: ;
     profile_link: faker.helpers.arrayElement([
       {},
       { facebook: faker.internet.url() },
