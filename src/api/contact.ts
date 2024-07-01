@@ -89,12 +89,30 @@ export const contactApi = createApi({
         { type: "Contacts", uuid },
       ],
     }),
-    deleteContact: build.mutation<{ success: boolean; uuid: number }, number>({
+    deleteContact: build.mutation<{ success: boolean; uuid: number }, string>({
       query(uuid) {
         return {
           url: `/contact/contact/${uuid}`,
           method: "DELETE",
         };
+      },
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const res = await queryFulfilled;
+          console.log(res, "response from api");
+
+          // show success toast if ok
+          if (res.meta?.response?.ok) {
+            getSuccessToast(`Contact Deleted !!!`);
+          } else {
+            // show error toast
+            getErrorToast(`Cannot Delete contact `);
+          }
+        } catch (err) {
+          console.log(err, "error");
+          // show error toast
+          getErrorToast(`Cannot create contact  ${err.error.data.error}`);
+        }
       },
       invalidatesTags: (result, error, uuid) => [{ type: "Contacts", uuid }],
     }),

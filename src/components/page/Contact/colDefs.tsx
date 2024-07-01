@@ -1,5 +1,6 @@
 import { IContact } from "@/@types/crm";
 import { useDeleteContactMutation } from "@/api/contact";
+import AlertDialog from "@/components/custom/common/AlertDialog/AlertDialog";
 import {
   CallIconOutlined,
   EditIcon,
@@ -8,12 +9,10 @@ import {
   WhatsAppIconOutlined,
 } from "@/components/custom/common/icons/commonIcons";
 import Tags from "@/components/custom/common/Tags/Tags";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { getTagVariantForContacts } from "@/lib/utils";
 import { Link } from "react-router-dom";
-
-const deleteContact = async () => {
-  await useDeleteContactMutation;
-};
 
 export const colDefs = [
   {
@@ -100,14 +99,36 @@ export const colDefs = [
     headerCheckboxSelection: false,
 
     cellRenderer: (p: { value: string; data: IContact }) => {
+      const [deleteContact] = useDeleteContactMutation();
+      // delete contact handler
+      const handleDelete = (uuid: string) => {
+        console.log("clicked");
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+          title: <p>Confirm Delete</p>,
+          text: "Are you sure you want to delete this contact",
+          icon: "warning",
+          showDenyButton: true,
+          showCloseButton: true,
+          showConfirmButton: true,
+          focusConfirm: false,
+          focusCancel: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteContact(uuid);
+          }
+
+          return console.log(result);
+        });
+      };
+
       return (
         <div className="flex gap-4 items-center justify-start  h-full">
-          <Link to={`/crm/contact/delete/${p.data.uuid}`}>
-            <TrashIcon
-              id={p.data.uuid}
-              className="text-destructive cursor-pointer"
-            />
-          </Link>
+          <TrashIcon
+            onClick={() => handleDelete(p.data.uuid ?? "1")}
+            id={p.data.uuid}
+            className="text-destructive cursor-pointer"
+          />
           <Link to={`/crm/contact/update/${p.data.uuid}`}>
             <EditIcon
               id={p.data.uuid}

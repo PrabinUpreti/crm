@@ -197,6 +197,8 @@
     "slate-hyperscript": "^0.100.0",
     "slate-react": "^0.102.0",
     "sonner": "^1.4.41",
+    "sweetalert2": "^11.12.1",
+    "sweetalert2-react-content": "^5.0.7",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-resize-observer": "^9.1.0",
