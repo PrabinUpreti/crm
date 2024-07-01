@@ -1,8 +1,6 @@
-import { Tag } from "emblor";
-
 export interface IContact {
-  uuid: string;
-  organization: number;
+  uuid?: string;
+  organization?: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -13,7 +11,7 @@ export interface IContact {
   company_name: string;
   company_position?: null | string;
   next_comms_date?: null | string;
-  background_field: string;
+  background_field?: string;
   social_media_links: { type: string; url: string }[];
   source: string[];
   opportunity: string;

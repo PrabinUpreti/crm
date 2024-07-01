@@ -33,16 +33,23 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@/components/custom/common/icons/commonIcons";
-import { useAddContactMutation } from "@/api/contact";
+import { useGetContactQuery, useUpdateContactMutation } from "@/api/contact";
 import Spinner from "@/components/custom/common/Loaders/Spinner/Spinner";
+import { useParams } from "react-router";
+import { IContact } from "@/@types/crm";
 
-const CreateContact: React.FC = () => {
+const UpdateContact: React.FC = () => {
+  const { contactId } = useParams();
   // form schema
-  const [addContact, { isLoading }] = useAddContactMutation();
+  const { data, isLoading } = useGetContactQuery(contactId);
+  const [updateContact, { isLoading: isUpdateContactLoading }] =
+    useUpdateContactMutation();
+
+  console.log(data);
   const formSchema = z.object({
     first_name: z.string().min(2).max(100),
     last_name: z.string().min(2).max(100),
-    organization: z.string(),
+    // organization: z.string(),
     email: z.string().email(),
     city: z.string().min(2).max(30),
     street: z.string().min(2).max(30),
@@ -77,7 +84,7 @@ const CreateContact: React.FC = () => {
     defaultValues: {
       first_name: "",
       last_name: "",
-      organization: "",
+      // organization: "",
       email: "",
       city: "",
       street: "",
@@ -92,6 +99,27 @@ const CreateContact: React.FC = () => {
       // category: null,
       // next_comms_date: new Date(Date.now()),
     },
+    values: {
+      first_name: data?.first_name ?? "",
+      last_name: data?.last_name ?? "",
+      // organization: data?.organization ?? "",
+      email: data?.email ?? "",
+      city: data?.city ?? "",
+      street: data?.street ?? "",
+      country: data?.country ?? "",
+      phone: data?.phone ?? "",
+      company_name: data?.company_name ?? "",
+      company_position: data?.company_position ?? "",
+      background_field: data?.background_field ?? "",
+      social_media_links: data?.social_media_links ?? [{ url: "", type: "" }],
+      source:
+        data?.source?.map((item: string, index) => {
+          return {
+            id: `${index}`,
+            text: item as string,
+          };
+        }) ?? [],
+    },
   });
   console.log(form, "FORM HOOKS");
 
@@ -103,17 +131,23 @@ const CreateContact: React.FC = () => {
 
     const source = values.source.map((sourceItem) => sourceItem.text);
     const payload = {
+      ...data,
       ...values,
-      organization: Number(1),
+      id: data?.uuid ?? "1",
       source,
     };
-    await addContact(payload);
+    await updateContact(payload);
   }
   const { fields, append, move, remove } = useFieldArray({
     control: form.control,
     name: "social_media_links",
   });
 
+  if (isLoading) {
+    <div className="h-screen w-full flex items-center justify-center">
+      <Spinner size={"large"} />
+    </div>;
+  }
   return (
     <ShadForm {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
@@ -447,8 +481,12 @@ const CreateContact: React.FC = () => {
             </div>
           </div>
         </div>
-        <Button disabled={isLoading} type="submit" className="w-[100px]">
-          {isLoading ? (
+        <Button
+          disabled={isUpdateContactLoading}
+          type="submit"
+          className="w-[100px]"
+        >
+          {isUpdateContactLoading ? (
             <Spinner className="text-white" size={`small`} />
           ) : (
             `Submit`
@@ -459,4 +497,4 @@ const CreateContact: React.FC = () => {
   );
 };
 
-export default CreateContact;
+export default UpdateContact;

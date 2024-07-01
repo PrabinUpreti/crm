@@ -1,4 +1,5 @@
 import { IContact } from "@/@types/crm";
+import { useDeleteContactMutation } from "@/api/contact";
 import {
   CallIconOutlined,
   EditIcon,
@@ -9,6 +10,11 @@ import {
 import Tags from "@/components/custom/common/Tags/Tags";
 import { getTagVariantForContacts } from "@/lib/utils";
 import { Link } from "react-router-dom";
+
+const deleteContact = async () => {
+  await useDeleteContactMutation;
+};
+
 export const colDefs = [
   {
     field: "first_name",
@@ -49,10 +55,30 @@ export const colDefs = [
     field: "company_name",
     headerName: "Company",
     filter: "agSelectFilterColumn",
+    editable: true,
+    cellEditor: "agSelectCellEditor",
+    cellEditorParams: {
+      allowTyping: true,
+      highlightMatch: true,
+      searchType: "match",
+      filterList: true,
+      valueListMaxHeight: 220,
+      values: ["Not Started", "Pending", "On Progress", "Completed"],
+    },
   },
   {
     field: "category",
     headerName: "Contact Category",
+    editable: true,
+    cellEditor: "agSelectCellEditor",
+    cellEditorParams: {
+      allowTyping: true,
+      highlightMatch: true,
+      searchType: "match",
+      filterList: true,
+      valueListMaxHeight: 220,
+      values: ["Not Started", "Pending", "On Progress", "Completed"],
+    },
     cellRenderer: (p: { value: string }) => {
       if (!p.value)
         return <div className="flex items-center justify-center">-</div>;
@@ -76,24 +102,28 @@ export const colDefs = [
     cellRenderer: (p: { value: string; data: IContact }) => {
       return (
         <div className="flex gap-4 items-center justify-start  h-full">
-          <TrashIcon
-            id={p.data.id}
-            className="text-destructive cursor-pointer"
-          />
-          <EditIcon
-            id={p.data.id}
-            className="text-primary text-lg cursor-pointer"
-          />
+          <Link to={`/crm/contact/delete/${p.data.uuid}`}>
+            <TrashIcon
+              id={p.data.uuid}
+              className="text-destructive cursor-pointer"
+            />
+          </Link>
+          <Link to={`/crm/contact/update/${p.data.uuid}`}>
+            <EditIcon
+              id={p.data.uuid}
+              className="text-primary text-lg cursor-pointer"
+            />
+          </Link>
           <EmailIconOutlined
-            id={p.data.id}
+            id={p.data.uuid}
             className="text-accent-foreground text-lg cursor-pointer"
           />
           <CallIconOutlined
-            id={p.data.id}
+            id={p.data.uuid}
             className="text-accent-foreground text-lg cursor-pointer"
           />
           <WhatsAppIconOutlined
-            id={p.data.id}
+            id={p.data.uuid}
             className="text-accent-foreground text-lg cursor-pointer"
           />
         </div>

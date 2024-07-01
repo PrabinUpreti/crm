@@ -2,6 +2,7 @@ import { IContact } from "@/@types/crm";
 import { REAL_API_BASE_URL } from "@/utils/constants";
 import { getErrorToast, getSuccessToast } from "@/utils/constants/toast";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { redirect } from "react-router";
 
 export const contactApi = createApi({
   reducerPath: "contact",
@@ -51,35 +52,52 @@ export const contactApi = createApi({
       query: (uuid) => `/contact/contact/${uuid}`,
       providesTags: () => [{ type: "Contacts", id: "detail" }],
     }),
-    // updateTask: build.mutation<void, Pick<ITask, "id"> & Partial<ITask>>({
-    //   query: ({ id, ...patch }) => ({
-    //     url: `tasks/${id}`,
-    //     method: "PUT",
-    //     body: patch,
-    //   }),
-    //   async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-    //     const patchResult = dispatch(
-    //       taskApi.util.updateQueryData("getTask", id, (draft) => {
-    //         Object.assign(draft, patch);
-    //       })
-    //     );
-    //     try {
-    //       await queryFulfilled;
-    //     } catch {
-    //       patchResult.undo();
-    //     }
-    //   },
-    //   invalidatesTags: (result, error, { id }) => [{ type: "Task", id }],
-    // }),
-    // deleteTask: build.mutation<{ success: boolean; id: number }, number>({
-    //   query(id) {
-    //     return {
-    //       url: `tasks/${id}`,
-    //       method: "DELETE",
-    //     };
-    //   },
-    //   invalidatesTags: (result, error, id) => [{ type: "Task", id }],
-    // }),
+    updateContact: build.mutation<
+      void,
+      Pick<IContact, "uuid"> & Partial<IContact>
+    >({
+      query: ({ uuid, ...patch }) => ({
+        url: `/contact/contact/${uuid}`,
+        method: "PUT",
+        body: patch,
+      }),
+      async onQueryStarted({ uuid, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          contactApi.util.updateQueryData("getContact", uuid, (draft) => {
+            Object.assign(draft, patch);
+          })
+        );
+        try {
+          const res = await queryFulfilled;
+
+          if (res.meta?.response?.ok) {
+            getSuccessToast(`Contact created !!!`);
+            // redirect("/crm/contact");
+          } else {
+            // show error toast
+            getErrorToast(`Cannot create contact `);
+          }
+        } catch (err) {
+          patchResult.undo();
+
+          console.log(err, "error");
+          // show error toast
+          getErrorToast(`Cannot create contact  ${err.error.data.error}`);
+        }
+      },
+      invalidatesTags: (result, error, { uuid }) => [
+        { type: "Contacts", uuid },
+      ],
+    }),
+    deleteContact: build.mutation<{ success: boolean; uuid: number }, number>({
+      query(uuid) {
+        return {
+          url: `/contact/contact/${uuid}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: (result, error, uuid) => [{ type: "Contacts", uuid }],
+    }),
   }),
 });
 
@@ -87,6 +105,6 @@ export const {
   useGetContactsQuery,
   useGetContactQuery,
   useAddContactMutation,
-  //   useUpdateTaskMutation,
-  //   useDeleteTaskMutation,
+  useUpdateContactMutation,
+  useDeleteContactMutation,
 } = contactApi;

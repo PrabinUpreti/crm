@@ -28,6 +28,7 @@ import ContactDetailPage from "@/pages/Contact/ContactDetailPage";
 import GForm from "@/pages/GForm/GForm";
 import GFormTab from "@/pages/GForm/GFormTab";
 import EmailTemplatePage from "@/pages/EmailTemplate/EmailTemplatePage";
+import UpdateContactPage from "@/pages/Contact/UpdateContactPage";
 
 // setting routes
 export const settingRoutes = [
@@ -107,6 +108,25 @@ export const crmModuleRoutes = [
   {
     path: `/crm/contact/create`,
     element: CreateContactPage,
+    pageTitle: pageTitles.crmCreateContactPage,
+    crumbs: () => [
+      {
+        label: { key: ``, fallback: `Contact` },
+        path: `/crm/contact`,
+      },
+      {
+        label: { key: ``, fallback: `Create` },
+        path: `/crm/contact/create`,
+      },
+      {
+        label: { key: ``, fallback: `Create` },
+        path: `/crm/contact/create`,
+      },
+    ],
+  },
+  {
+    path: `/crm/contact/update/:contactId`,
+    element: UpdateContactPage,
     pageTitle: pageTitles.crmCreateContactPage,
     crumbs: () => [
       {
